@@ -1,17 +1,47 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, url_for, redirect
 from io import BytesIO
 import dlib
 import cv2
 import numpy as np
+from itsdangerous import URLSafeTimedSerializer, BadSignature, SignatureExpired
+from datetime import datetime
 
 app = Flask(__name__)
 
 # Carregar o classificador de faces pré-treinado
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+app.secret_key = 'sua_chave_secreta'  # Defina uma chave secreta para segurança
+# Inicialize o serializer
+serializer = URLSafeTimedSerializer(app.secret_key)
 
 @app.route('/')
 def index():
     return render_template('index.html')  # Página de upload
+
+def gerar_link_temporario(validade_segundos=5):
+    # Gera o token com e a validade
+    data_hora_atual = datetime.today()
+    token = serializer.dumps(f"{data_hora_atual}")
+    # Cria o link usando o token
+    return url_for('verificar_link', token=token, _external=True)
+
+@app.route('/verificar/<token>')
+def verificar_link(token):
+    try:
+        # Tenta carregar o token, verificando se ainda é válido
+        data_hora_atual = serializer.loads(token, max_age=5)  # Validade em segundos
+        return render_template('index.html')  # Página de upload
+    except SignatureExpired:
+        return "Link expirado!"
+    except BadSignature:
+        return "Link inválido!"
+
+@app.route('/gerar-link/')
+def gerar():
+    # Chama a função para gerar o link com validade de 1 hora
+    link = gerar_link_temporario(validade_segundos=5)
+    return f"Seu link temporário é: {link}"
+
 
 @app.route('/comparar-rostos', methods=['POST'])
 def comparar_rostos():
