@@ -11,5 +11,11 @@
         <input type="file" name="file" accept="image/*" required>
         <button type="submit">Upload Image</button>
     </form>
+
+    <form action="/comparar-rostos" method="POST" enctype="multipart/form-data">
+        <input type="file" name="filea" accept="image/*" required>
+        <input type="file" name="fileb" accept="image/*" required>
+        <button type="submit">compare Images</button>
+    </form>
 </body>
 </html>
