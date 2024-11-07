@@ -128,7 +128,6 @@ def login():
     arquivos = os.listdir(diretorio_imagens)
     # Filtra os arquivos que começam com o login do usuário
     imagens_usuario = [arquivo for arquivo in arquivos if arquivo.startswith(user_login)]
-    print("Imagens do usuário:", imagens_usuario)
     # Se não encontrar imagens, pode definir imagens padrão
     if not imagens_usuario:
         return jsonify({"result": False, "message": "Nenhuma imagem encontrada."}), 400
