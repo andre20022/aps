@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <style>
+        body{
+            margin: 0;
+            background-color: #ddd;
+        }
+        input[type="text"], input[type="email"]{
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            width: 100%;
+            border: none;
+            background: #eee;
+        }
+        label{
+            margin-bottom: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            display: block;
+        }
+        .title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .container-form{
+            width: 450px;
+        }
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .file-input {
+            display: none; 
+        }
+        .custom-file-label {
+            padding: 10px 20px;
+            background-color: brown;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+        .custom-file-label:hover {
+            background-color: rgb(141, 40, 40); 
+        }
+        .file-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .file-previews img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            padding: 7px;
+            background: aliceblue;
+        }
+        button{
+            background: black;
+            color: #fff;
+            margin-top: 30px;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Cadastro de Usuário</h1>
+        <div class="container-form">
+            <form action="/cadastro" method="POST" enctype="multipart/form-data">
+                <label for="nome">Nome completo</label>
+                <input type="text" id="nome" name="nome" required>
+                <label for="login">Login</label>
+                <input type="text" id="login" name="login" required>
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" required>
+                <label for="file-upload">Fotos</label>
+                <div class="upload-container">
+                    <input type="file" class="file-input" multiple="true" id="file-upload" name="images" accept="image/*" required>
+                    <label for="file-upload" class="custom-file-label">Escolher arquivos</label>
+                    <div id="file-previews" class="file-previews">Nenhuma imagem selecionada</div>
+                </div>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.getElementById('file-upload').addEventListener('change', function() {
+            const previewContainer = document.getElementById('file-previews');
+            previewContainer.innerHTML = ''; 
+            const files = this.files;
+            if (files.length === 0) {
+                previewContainer.textContent = 'Nenhuma imagem selecionada';
+            } else {
+                Array.from(files).forEach(file => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            previewContainer.appendChild(img);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        const msg = document.createElement('p');
+                        msg.textContent = `O arquivo ${file.name} não é uma imagem.`;
+                        previewContainer.appendChild(msg);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
