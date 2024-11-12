@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nivel de Usuário</title>
+    <style>
+        body{
+            margin: 0;
+            background-color: #ddd;
+        }
+        .title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"], input[type="email"]{
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            width: 100%;
+            border: none;
+            background: #eee;
+        }
+        label{
+            margin-bottom: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            display: block;
+        }
+        button{
+            background: black;
+            color: #fff;
+            margin-top: 30px;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        select {
+            padding: 10px;
+        }
+        .login {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Nivel de Usuário</h1>
+        <form action="/cadastro-nivel" method="post">
+            <div class="login">Login: {{ info.login }}</div>
+            <input type="hidden" name="id" value="{{ info.id }}">
+            <label for="nivel">Selecione o nivel</label>
+            <select name="nivel" id="nivel">
+                <option value="3">Gerente</option>
+                <option value="2">Suporte</option>
+                <option value="1">Colaborador</option>
+            </select>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>

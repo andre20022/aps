@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Cadastro</title>
+    <style>
+        body{
+            margin: 0;
+            background-color: #ddd;
+        }
+        .title {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+        }
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input[type="text"], input[type="email"]{
+            display: block;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            width: 100%;
+            border: none;
+            background: #eee;
+        }
+        label{
+            margin-bottom: 10px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 700;
+            display: block;
+        }
+        table {
+            width: 50%;
+            border-radius: 15px;
+        }
+        thead {
+            background: #eee;
+            border-radius: 15px;
+        }
+        tr {
+            height: 55px;
+        }
+        td {
+            text-align: center;
+        }
+        .button {
+            background: black;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        .linha {
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Lista de Cadastro</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Login</th>
+                    <th>E-mail</th>
+                    <th>Situação</th>
+                    <th>Nivel</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in list %}
+                    <tr class="linha">
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.login }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>
+                            {% if usuario.ativo == 1 %}
+                                <p>Ativo</p>
+                            {% else %}
+                                <p>Inativo</p>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if usuario.nivel == 1 %}
+                                <p>Gerente</p>
+                            {% elif usuario.nivel == 2 %}
+                                <p>Suporte</p>
+                            {% else %}
+                                <p>Colaborador</p>
+                            {% endif %}
+                        </td>
+                        <td><a class="button" href='http://localhost:5000/nivel/{{ usuario.id }}'>Escolher nivel</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
